@@ -15,14 +15,14 @@ sub trim($str) {
 }
 
 sub read_lines($filename, $line_callback) {
-    my $ret = '';
+    my @ret;
     open(my $fh, "<", $filename) || die("Error opening $filename: $!");
     while (<$fh>) {
         chomp;
-        $ret .= &$line_callback($_); # append callback result to $str
+        push @ret, $line_callback ? &$line_callback($_) : $_; # append callback result to $str
     }
     close($fh);
-    return $ret;
+    return @ret;
 }
 
 1;
