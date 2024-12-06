@@ -101,12 +101,13 @@ sub print_map($map) {
   }
 }
 
-# brute-force approach - add random blocks and hope for a loop
+# brutish-force approach - add random blocks *in guard's path* and hope for a loop
 sub count_loops($mapin, $pos, $heading) {
   my $loop = 0;
+  my @state0 = walk($mapin,$pos,$heading);
   for (my $y = 0; $y < @{$mapin}; ++$y) {
     for (my $x = 0; $x < @{$mapin->[$y]}; ++$x) {
-      next unless ($mapin->[$y][$x] eq '.');
+      next unless ($state0[0]->[$y][$x] eq 'X');
       my $map = dclone($mapin);
       $map->[$y][$x] = '#';
       my @state = walk($map, $pos, $heading);
